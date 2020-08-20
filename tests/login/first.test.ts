@@ -35,7 +35,7 @@ describe("Login form", function () {
     browser = new SeleniumUtils(driver);
   });
 
-  it("simple Selenium test", async function () {
+  it("Authorization form", async function () {
     await driver.get('http://dev2.lab-27.ru');
     await driver.sleep(3000);
     driver.findElement(By.css('[ng-model="ctrl.email"]')).sendKeys('w@w.w');
