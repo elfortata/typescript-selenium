@@ -30,46 +30,49 @@ describe("Login form", function () {
 
   before(async function () {
     driver = await new Builder().withCapabilities(capabilities).build();
-    page = new LoginPage(driver);
-    calendarPage = new CalendarPage(driver);
-    browser = new SeleniumUtils(driver);
-  });
-
-  it("Authorization form", async function () {
-    await driver.get('http://dev2.lab-27.ru');
+ 
+    await driver.get('http://lab2.webtm.ru/');
     await driver.sleep(3000);
     driver.findElement(By.css('[ng-model="ctrl.email"]')).sendKeys('w@w.w');
     driver.findElement(By.css('[ng-model="ctrl.password"]')).sendKeys('w');
     (await driver.findElement(By.css('[type="button"]'))).click()
     await driver.sleep(3000);
-    let blockOnLoginPage = driver.findElement(By.css('login-access-component'));
-    let isExist = blockOnLoginPage.then(()=> true, ()=> false);
+  });
+
+    it("Add User to calendar", async function () {
+      (await driver.findElement(By.css('md-tab-item:nth-child(2)'))).click() 
+      await driver.sleep(1000);
+      
+
+      let saveButton = driver.findElement(By.css('[ng-click="ctrl.save()"]'));
+     let exestSaveButton = saveButton.then(()=> true, ()=> false);
     (await driver.findElement(By.css('[ng-click="exit()"]'))).click()
-    await assert.equal(await isExist, false);
+     await assert.equal(await exestSaveButton, false);
   });
 
-  it("Positive test", async function () {
-    browser.go(App.url);
-    await page.isLoad();
-    await browser.keys(page.email(), App.user.login);
-    await browser.keys(page.password(), App.user.password);
-    await browser.click(page.submit());
-    await calendarPage.isLoad();
-    let isCalendarPage = await calendarPage.isPage();
-    await browser.click(calendarPage.buttonExit());
-    await assert.equal(isCalendarPage, true);
-  });
+      
+      
+      // let blockOnLoginPage = driver.findElement(By.css('login-access-component'));
+      // let isExist = blockOnLoginPage.then(()=> true, ()=> false);
+      
+  //   let blockOnLoginPage = driver.findElement(By.css('login-access-component'));
+  //   let isExist = blockOnLoginPage.then(()=> true, ()=> false);
+  //   (await driver.findElement(By.css('[ng-click="exit()"]'))).click()
+  //   await assert.equal(await isExist, false);
+  // });
 
-  it("Negative test", async function () {
-    browser.go(App.url);
-    await page.isLoad();
-    await browser.sleep(2000);
-    await browser.keys(page.email(), App.user.login);
-    await browser.keys(page.password(), "qweqweqweqwe");
-    await browser.click(page.submit());
-    await page.isLoad();
-    await assert.equal(await page.isPage(), true);
-  });
+  // it("Positive test", async function () {
+  //   browser.go(App.url);
+  //   await page.isLoad();
+  //   await browser.keys(page.email(), App.user.login);
+  //   await browser.keys(page.password(), App.user.password);
+  //   await browser.click(page.submit());
+  //   await calendarPage.isLoad();
+  //   let isCalendarPage = await calendarPage.isPage();
+  //   await browser.click(calendarPage.buttonExit());
+  //   await assert.equal(isCalendarPage, true);
+  // });
+
 
   after(() => driver && driver.quit());
 });
